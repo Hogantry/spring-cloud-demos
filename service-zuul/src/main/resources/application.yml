@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: service-zuul
+  zipkin:
+    base-url: http://172.16.128.35:9411
+
+server:
+  port: 8766
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**
+      serviceId: service-consumer
+    api-b:
+      path: /api-b/**
+      serviceId: CONFIG-CLIENT
+

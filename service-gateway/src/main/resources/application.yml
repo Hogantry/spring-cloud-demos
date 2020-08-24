@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: service-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false #表明gateway开启服务注册和发现的功能，并且gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务。
+          lowerCaseServiceId: true # 转发时，将负载均衡的ServiceId转换成小写
+      routes:
+        - id: service-hi
+          uri: lb://SERVICE-PROVIDER
+          predicates:
+            - Path=/demo/**
+          filters:
+            - StripPrefix=1
+#        - id: after_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+#          filters:
+#            - AddRequestHeader=X-Request-Foo, Bar
+#
+#        - id: header_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - Header=X-Request-Id, \d+
+#
+#        - id: cookie_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - Cookie=name, forezp
+#
+#        - id: host_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - Host=**.fangzhipeng.com
+#
+#        - id: method_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - Method=GET
+#
+#        - id: path_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - Path=/foo/{segment}
+#            - RewritePath=/foo/(?<segment>.*), /$\{segment}
+#          filter:
+#            - name: RequestRateLimiter # gateway 内置限流过滤器，使用令牌桶算法
+#              args:
+#                key-resolver: '#{@hostAddrKeyResolver}'
+#                redis-rate-limiter.replenishRate: 1
+#                redis-rate-limiter.burstCapacity: 3
+#
+#        - id: query_route
+#          uri: http://localhost:8763
+#          predicates:
+#            - Query=foo, ba
+
+server:
+  port: 8768
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+

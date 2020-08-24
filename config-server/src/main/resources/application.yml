@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Hogantry/SpringcloudConfig
+          search-paths: respo
+          username: dengfazhi
+          password: aaa123456
+      label: master
+
+server:
+  port: 8767
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+

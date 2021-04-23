@@ -1,0 +1,16 @@
+ribbon:
+  eureka:
+    # 禁用eureka
+    enable: false
+  listOfServers: http://localhost:8763
+  # ribbon 饥饿加载，避免第一次调用时，出现超时情况
+  eager-load:
+    enabled: true
+    # 配置需要饥饿加载的服务提供者名称
+    clients: provider1,provider2
+  # 请求连接的超时时间
+  connectTimeout: 2000
+  # 请求处理的超时时间
+  readTimeout: 5000
+server:
+  port: 8080

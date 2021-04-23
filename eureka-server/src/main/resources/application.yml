@@ -1,6 +1,13 @@
 spring:
   application:
     name: eurka-server
+  profiles:
+    active: pro
+
+---
+
+spring:
+  profiles: pro
 
 server:
   port: 8761
@@ -8,15 +15,59 @@ server:
 eureka:
   instance:
     hostname: localhost
-    preferIpAddress: true
+#    preferIpAddress: true
     #instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
   client:
-    registerWithEureka: false
-    fetchRegistry: false
-  server:
-    enable-self-preservation: true # 关闭自我保护模式
+    register-with-eureka: false
+    fetch-registry: false
+#  server:
+#    enable-self-preservation: true # 关闭自我保护模式
 #    serviceUrl:
 #      defaultZone: http://${eureka.instance.hostname}:8762/eureka/
+
+---
+
+spring:
+  profiles: test
+
+eureka:
+  instance:
+    hostname: localhost
+    # ${spring.cloud.client.hostname} Eureka管理界面显示的status信息
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    # status信息点击后默认跳转至域名，如下配置，则跳转至ip
+    prefer-ip-address: true
+    # 修改status信息点击后跳转的路径
+    status-page-url: https://www.baidu.com
+    # 客户端参数？
+    # 默认90秒，表示server至上一次收到client的心跳后，等待下次心跳的超时时间，该时间内没有收到下一次心跳，则移除该instance
+    lease-expiration-duration-in-seconds: 10
+    # 默认30秒，表示client发送心跳给server端的频率
+    lease-renewal-interval-in-seconds: 10
+    # eureka 自定义元数据
+    metadata-map:
+      dfz: 18
+  server:
+    # 关闭自我保护机制
+    enable-self-preservation: false
+    # 默认6_0000毫秒
+    eviction-interval-timer-in-ms: 5000
+  client:
+    # Eureka服务端必须配如下两个参数，否则无法启动，客户端可根据需要配置，实现服务的只注册或者只订阅功能
+    # 设置为 false， 代表不向注册中心注册自己
+    register-with-eureka: false
+    # 设置为 false，不需要去注册中心检索服务
+    fetch-registry: false
+    initial-instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 10
+    # 客户端参数
+    healthcheck:
+      # 开启健康检查，需要actuator？
+      enabled: true
+
+    # 类型是Map，所以其下的属性不会有提示
+    service-url:
+      default-zone: http://${eureka.instance.hostname}:8762/eureka/
 
 
 

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @ClassName HelloController
  * @Description HelloController
@@ -19,7 +21,8 @@ public class HelloController {
     String port;
 
     @GetMapping("/hi")
-    public String home(@RequestParam(value = "name", defaultValue = "DFZ") String name) {
+    public String home(@RequestParam(value = "name", defaultValue = "DFZ") String name) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(20);
         return "hi " + name + " ,i am from port:" + port;
     }
 

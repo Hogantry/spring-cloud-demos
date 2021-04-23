@@ -1,14 +1,19 @@
-package com.dfz.service.consumer.feign.controller;
+package com.dfz.cloud.ribbon.controller;
 
-import com.netflix.discovery.converters.Auto;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName HelloController
@@ -23,19 +28,17 @@ public class HelloController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private RestTemplateBuilder builder;
-
     @GetMapping("/hi")
-    @HystrixCommand(fallbackMethod = "hiError")
     public String home(@RequestParam(value = "name", defaultValue = "DFZ") String name) {
         System.out.println("ribbon");
-        builder.build();
-        return restTemplate.getForObject("http://SERVICE-PROVIDER/hi?name=" + name, String.class);
+
+        return restTemplate.getForObject("file://abc/hi?name=" + name, String.class);
     }
 
     public String hiError(String name) {
-        return "hi,"+name+",sorry,error!";
+        return "hi," + name + ",sorry,error!";
     }
+
+    
 
 }

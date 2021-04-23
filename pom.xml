@@ -15,6 +15,8 @@
         <module>service-zuul</module>
         <module>config-server</module>
         <module>service-gateway</module>
+        <module>cloud-robbon</module>
+        <module>cloud-demo</module>
     </modules>
     <packaging>pom</packaging>
 

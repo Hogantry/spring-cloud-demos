@@ -3,6 +3,8 @@ package com.dfz.service.consumer.feign;
 import brave.sampler.Sampler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.ClientHttpRequestFactorySupplier;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 //import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -11,6 +13,8 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 //import org.springframework.cloud.netflix.turbine.EnableTurbine;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -37,8 +41,18 @@ public class Application {
 
     @Bean
     @LoadBalanced
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
+    public RestTemplate getRestTemplate(RestTemplateBuilder builder, ClientHttpRequestFactory factory) {
+        RestTemplate restTemplate = new RestTemplate();
+        RestTemplateBuilder builder1 = builder.requestFactory(() -> factory);
+        return builder1.configure(restTemplate);
+    }
+
+    @Bean
+    public ClientHttpRequestFactory httpComponentsClientHttpRequestFactory() {
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setReadTimeout(5000);
+        factory.setConnectTimeout(5000);
+        return factory;
     }
 
     @Bean

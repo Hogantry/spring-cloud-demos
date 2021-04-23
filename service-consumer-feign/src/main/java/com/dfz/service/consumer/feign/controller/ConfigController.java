@@ -27,9 +27,9 @@ public class ConfigController {
         return foo;
     }
 
-    @GetMapping(value = "/autoHello")
-    public String hello(){
-        return config.toString();
-    }
+//    @GetMapping(value = "/autoHello/hi")
+//    public String hello(){
+//        return config.toString();
+//    }
 
 }
